@@ -67,6 +67,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add sent_messages.json
+        # 强制添加sent_messages.json（即使被.gitignore忽略）
+        git add sent_messages.json -f
         git diff --staged --quiet || git commit -m "更新消息去重记录 $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')"
         git push

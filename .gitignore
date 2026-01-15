@@ -3,8 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# 敏感信息文件
-sent_messages.json
+# 日志文件
 *.log
 
 # IDE
@@ -14,3 +13,5 @@ sent_messages.json
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 注释：sent_messages.json 需要提交，用于去重持久化
