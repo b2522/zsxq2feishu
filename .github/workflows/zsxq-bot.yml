@@ -7,6 +7,10 @@ on:
   # 也允许手动触发
   workflow_dispatch:
 
+# 允许写入权限
+permissions:
+  contents: write
+
 jobs:
   check-and-send:
     runs-on: ubuntu-latest
@@ -67,7 +71,21 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        # 强制添加sent_messages.json（即使被.gitignore忽略）
-        git add sent_messages.json -f
-        git diff --staged --quiet || git commit -m "更新消息去重记录 $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')"
-        git push
+        
+        # 检查sent_messages.json文件是否存在
+        if [ -f "sent_messages.json" ]; then
+          echo "发现sent_messages.json文件，准备提交"
+          # 强制添加sent_messages.json（即使被.gitignore忽略）
+          git add sent_messages.json -f
+          
+          # 检查是否有变更需要提交
+          if git diff --staged --quiet; then
+            echo "没有变更需要提交"
+          else
+            echo "提交去重记录变更"
+            git commit -m "更新消息去重记录 $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')"
+            git push
+          fi
+        else
+          echo "sent_messages.json文件不存在，跳过提交"
+        fi
