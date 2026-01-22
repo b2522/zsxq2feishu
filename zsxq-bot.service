@@ -1,0 +1,17 @@
+[Unit]
+Description=ZSXQ Feishu Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/zsxq2feishu
+Environment=PATH=/opt/zsxq2feishu/venv/bin
+ExecStart=/opt/zsxq2feishu/venv/bin/python /opt/zsxq2feishu/main.py --loop
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
